@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html ng-app="app">
+	<head>
+	<title>draughts</title>
+		<meta charset="UTF-8">
+		<script src="vendor/angular/angular.min.js"></script>
+		<script src="controllers/controller.js"></script>
+		<style>
+			body { position: absolute; width: 100%; height: 100%; overflow: hidden; }
+			.board { width: 80%; height: 80%; }
+			.some-directive { float: left; box-sizing: border-box; width: 10px; height: 10px; height: calc(100% / 8); width: calc(100% / 8); background: dimgrey; }
+			.board div:nth-of-type(16n+16),
+			.board div:nth-of-type(16n+14),
+			.board div:nth-of-type(16n+7),
+			.board div:nth-of-type(16n+12),
+			.board div:nth-of-type(16n+5),
+			.board div:nth-of-type(16n+10),
+			.board div:nth-of-type(16n+3),
+			.board div:nth-of-type(16n+1){ 
+				background-color: bisque;
+			}
+		</style>
+	</head>
+	<body ng-controller="mainCtrl as game">
+	{{game.score}}
+	{{game.board}}
+	{{game.turns}}
+	{{game.gameScore}}
+		<div class='board'>
+			<div ng-repeat="cell in game.board" some-directive ng-click="game.makeTurn($event)" value="{{$index}}" ng-mouseover="game.hover($index,$event)" ng-mouseleave="game.leave($index,$event)"></div>
+		</div>
+	</body>
+</html>

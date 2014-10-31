@@ -11,7 +11,7 @@
 
 
 (function(){
-	angular.module('app', []);
+	angular.module('app', ['ang-drag-drop']);
 
 	function mainCtrl(boardObject, gameObject, Checkers, King){
 		var game = this;
@@ -25,6 +25,21 @@
 			white: 12,
 			black:12
 		};
+		game.dragStart = function(e,elementIndex){
+			console.log(elementIndex);
+        	game.score[elementIndex].setPossibleMoves(elementIndex, game.score);
+    		if( game.score[elementIndex].possibleMoves.length )Array.prototype.forEach.call(document.querySelectorAll( game.score[elementIndex].possibleMoves.reduce(function(a,b){ return a+'.some-directive:nth-of-type('+(b+1)+'),';},'').slice(0, -1)),function(x){ x.style.background = 'red';});
+      	};
+      
+      	game.onDrop = function(event,elementIndex, draggedElementIndex){
+          console.log(event);
+           console.log(draggedElementIndex);
+           if(game.score[draggedElementIndex].possibleMoves.indexOf(elementIndex) > -1) {
+          		if(game.score[draggedElementIndex].possibleMoves.length) Array.prototype.forEach.call(document.querySelectorAll( game.score[draggedElementIndex].possibleMoves.reduce(function(a,b){ return a+'.some-directive:nth-of-type('+(b+1)+'),';},'').slice(0, -1)),function(x){console.log(x); x.style.background = 'none';});
+          		game.score[elementIndex] = game.score.splice(draggedElementIndex, 1, game.score[elementIndex])[0];
+           		console.log(game.score[draggedElementIndex]);
+           }
+      	};
 		// game.hover = function(a,e){
 		// 	//console.log(a);
 		// 	//console.log(document.querySelectorAll('.some-directive:nth-of-type('+a+'),.some-directive:nth-of-type('+(a+1)+')'));
@@ -38,15 +53,16 @@
 		// game.chooseSide = function(event){
 		// 	console.log(event.target.value);
 		// }
-
-		game.makeTurn = function(event){
+		game.makeTurn = function(event, elementIndex){
 			
 			console.log('in start');
-			var elementIndex = Array.prototype.indexOf.call(event.target.parentElement.children, event.target);
+			//var elementIndex = Array.prototype.indexOf.call(event.target.parentElement.children, event.target);
 			console.log(elementIndex);
 			
 			
 			game.score.turns = gameObject.score.turns;
+			console.log(elementIndex);
+			console.log(game.score[elementIndex].color);
 
 			if(game.score[elementIndex] && game.score[elementIndex].color == game.walking.color) {
 				console.log('in select');
@@ -119,7 +135,7 @@
 				this.color = color;
 			}
 			Checker.prototype.figure = color == 'white' ? 'o' : 'x';
-			Checker.prototype.direction = color == 'white' ?  -1 : 1;
+			Checker.prototype.direction = color == 'white' ?  1 : -1;
 			Checker.prototype.possibleMoves = [];
 			Checker.prototype.setPossibleMoves = function(index, board){
 				//console.log(board);
@@ -179,7 +195,7 @@
 
 	function gameObject(Checkers){
 		this.score = {
-		 	boardState : ['',Checkers.getCheckerInstance('white'),'',Checkers.getCheckerInstance('white'),'',Checkers.getCheckerInstance('white'),'',Checkers.getCheckerInstance('white'),Checkers.getCheckerInstance('white'),'',Checkers.getCheckerInstance('white'),'',Checkers.getCheckerInstance('white'),'',Checkers.getCheckerInstance('white'),'','',Checkers.getCheckerInstance('white'),'',Checkers.getCheckerInstance('white'),'',Checkers.getCheckerInstance('white'),'',Checkers.getCheckerInstance('white'),'','','','','','','','','','','','','','','','',Checkers.getCheckerInstance('black'),'',Checkers.getCheckerInstance('black'),'',Checkers.getCheckerInstance('black'),'',Checkers.getCheckerInstance('black'),'','',Checkers.getCheckerInstance('black'),'',Checkers.getCheckerInstance('black'),'',Checkers.getCheckerInstance('black'),'',Checkers.getCheckerInstance('black'),Checkers.getCheckerInstance('black'),'',Checkers.getCheckerInstance('black'),'',Checkers.getCheckerInstance('black'),'',Checkers.getCheckerInstance('black')],
+		 	boardState : ['',Checkers.getCheckerInstance('black'),'',Checkers.getCheckerInstance('black'),'',Checkers.getCheckerInstance('black'),'',Checkers.getCheckerInstance('black'),Checkers.getCheckerInstance('black'),'',Checkers.getCheckerInstance('black'),'',Checkers.getCheckerInstance('black'),'',Checkers.getCheckerInstance('black'),'','',Checkers.getCheckerInstance('black'),'',Checkers.getCheckerInstance('black'),'',Checkers.getCheckerInstance('black'),'',Checkers.getCheckerInstance('black'),'','','','','','','','','','','','','','','','',Checkers.getCheckerInstance('white'),'',Checkers.getCheckerInstance('white'),'',Checkers.getCheckerInstance('white'),'',Checkers.getCheckerInstance('white'),'','',Checkers.getCheckerInstance('white'),'',Checkers.getCheckerInstance('white'),'',Checkers.getCheckerInstance('white'),'',Checkers.getCheckerInstance('white'),Checkers.getCheckerInstance('white'),'',Checkers.getCheckerInstance('white'),'',Checkers.getCheckerInstance('white'),'',Checkers.getCheckerInstance('white')],
 		 	boardScore : { 'x' : 0, 'o' : 0},
 		 	turns : 0,
 		}
@@ -208,7 +224,7 @@
 		    },
 			template: [
 			  	'<div class="some-directive">',
-			  	'<span content class="{{game.score[$index].color}}"></span>',
+			  	'<span ui-draggable="true" drag="$index" class="{{game.score[$index].color}}" ng-mousedown="game.dragStart($event,$index)"></span>',
 			    '</div>'
 			].join('')
 		};
@@ -223,7 +239,7 @@
 	// }
 
 	angular
-		.module('app',[])
+		.module('app')
 		.controller('mainCtrl', mainCtrl)
 		// .controller('otherCtrl', otherCtrl)
 		.factory('boardObject', boardObject)

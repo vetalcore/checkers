@@ -5,10 +5,33 @@
 		<meta charset="UTF-8">
 		<script src="vendor/angular/angular.min.js"></script>
 		<script src="controllers/controller.js"></script>
+		<script src="vendor/angular-dragdrop-master/draganddrop.js"></script>
 		<style>
-			body { position: absolute; width: 100%; height: 100%; overflow: hidden; }
-			.board { width: 700px; height: 696px; margin: 0 auto; margin-top: 3%; -webkit-transition: width 1s cubic-bezier(.61,.82,.56,1.2) , height 1s cubic-bezier(.61,.82,.56,1.2); background: inherit; background-image: url(vendor/images/dark-wooden-2.jpg); background-position: center; background-size: cover; border-radius: 10px; }
+			body { position: absolute; width: 100%; height: 100%; overflow: hidden; margin: 0; background-image: url(vendor/images/rain-1.jpg); }
+
+			/* Open Sans */
+			@font-face { font-family: 'Open Sans'; font-style: normal; font-weight: 300; src: local('Open Sans Light'), local('OpenSans-Light'), url(vendor/opensans/OpenSans-Light.woff) format('woff'); }
+			@font-face { font-family: 'Open Sans'; font-style: normal; font-weight: 400; src: local('Open Sans'), local('OpenSans'), url(vendor/opensans/OpenSans-Regular.woff) format('woff'); }
+			@font-face { font-family: 'Open Sans'; font-style: normal; font-weight: 600; src: local('Open Sans Semibold'), local('OpenSans-Semibold'), url(vendor/opensans/OpenSans-Semibold.woff) format('woff'); }
+			@font-face { font-family: 'Open Sans'; font-style: normal; font-weight: 700; src: local('Open Sans Bold'), local('OpenSans-Bold'), url(vendor/opensans/OpenSans-Bold.woff) format('woff'); }
+			@font-face { font-family: 'Open Sans'; font-style: normal; font-weight: 800; src: local('Open Sans Extrabold'), local('OpenSans-Extrabold'), url(vendor/opensans/openSans-Extrabold.woff) format('woff'); }
+			@font-face { font-family: 'Open Sans'; font-style: italic; font-weight: 300; src: local('Open Sans Light Italic'), local('OpenSansLight-Italic'), url(vendor/opensans/OpenSans-Light-Italic.woff) format('woff'); }
+			@font-face { font-family: 'Open Sans'; font-style: italic; font-weight: 400; src: local('Open Sans Italic'), local('OpenSans-Italic'), url(vendor/opensans/OpenSans-Regular-Italic.woff) format('woff'); }
+			@font-face { font-family: 'Open Sans'; font-style: italic; font-weight: 600; src: local('Open Sans Semibold Italic'), local('OpenSans-SemiboldItalic'), url(vendor/opensans/OpenSans-Semibold-Italic.woff) format('woff'); }
+			@font-face { font-family: 'Open Sans'; font-style: italic; font-weight: 700; src: local('Open Sans Bold Italic'), local('OpenSans-BoldItalic'), url(vendor/opensans/OpenSans-Bold-Italic.woff) format('woff'); }
+			@font-face { font-family: 'Open Sans'; font-style: italic; font-weight: 800; src: local('Open Sans Extrabold Italic'), local('OpenSans-ExtraboldItalic'), url(vendor/openssans/OpenSans-Extrabold-Italic.woff) format('woff'); }
+
+			.left_panel { position: absolute; float: right; width: 300px; height: 100%; top: 0; right: -290px; display: -moz-box; display: -webkit-box; display: box; -moz-box-orient: horizontal; -webkit-box-orient: horizontal; box-orient: horizontal; font-family: 'Open Sans', Roboto, sans-serif; -webkit-transition: right .5s,-webkit-transform .5s; }
+			.left_panel:hover { cursor: pointer; right: 0; /*-webkit-transform: rotateY(180deg); transform: rotateY(360deg);*/ -webkit-transition: right .5s,-webkit-transform .5s; }
+			.left_panel:hover span { height: 50px; border-bottom: 1px solid #CCCCCC; -webkit-transition: height .4s cubic-bezier(.53,.69,.46,5.79); }
+			.left_panel_slide { position: relative; float: left; height: 100%; width: 10px; border-right: 1px solid #CCCCCC; }
+			.left_panel_content { position: relative; float: left; height: 100%; background: rgba(255,255,255,.2); border-right: 1px solid; moz-box-flex: 1; -webkit-box-flex: 1; box-flex: 1; }
+			.left_panel_content > span { float: left; height: 0; width: 100%; text-align: center; overflow: hidden; color: #777777;  }
+			.left_panel_content > span:hover { height: 100px; background: rgba(255,255,255,.9); font-weight: 100; font-size: larger; color:#CCCCCC; -webkit-transition: height 1s cubic-bezier(.53,.69,.46,1.79); }
+			.left_panel_content > span h5 { font-weight: inherit; font-size: inherit; margin: 0; margin-top: 10px; margin-bottom: 13px; text-transform: uppercase; letter-spacing: -2px; color: inherit; }
+			.board { width: 700px; height: 696px; margin: 0 auto; margin-top: 3%; -webkit-transition: width 1s cubic-bezier(.61,.82,.56,1.2), height 1s cubic-bezier(.61,.82,.56,1.2); background: inherit; /*background-image: url(vendor/images/dark-wooden-2.jpg); background-position: center; background-size: cover;*/ background: rgba(0,0,0,.5); border-radius: 10px; color:#777777; }
 			.some-directive { float: left; box-sizing: border-box; width: 10px; height: 10px; height: calc(100% / 8); width: calc(100% / 8); -webkit-box-shadow: inset 0px 0px 3px 2px rgba(204,204,204,1); -moz-box-shadow: inset 0px 0px 3px 2px rgba(204,204,204,1); box-shadow: inset 0px 0px 3px 2px rgba(204,204,204,1); border: 1px solid rgba(0,0,0,0.9);  border-radius: 6px; color: white; }
+			.some-directive:hover { -webkit-transform: rotate(360000deg) scale(1) skew(0deg) translate(0px); -webkit-transition: -webkit-transform 1s; }
 			.some-directive span {  width: 54px; height: 54px; position: relative; top: calc(50% - 30px); margin: 0 auto; border-radius: 50%; }
 			.some-directive .white { display: block; background: white;  -webkit-box-shadow: 1px 8px 0px 0px rgba(0,0,0,1); -moz-box-shadow: 1px 8px 0px 0px rgba(0,0,0,1); box-shadow: 1px 8px 0px 0px rgba(0,0,0,1); }
 			.some-directive .black { display: block; background: black;  -webkit-box-shadow: -2px 33px 37px -5px rgba(255,255,255,1); -moz-box-shadow: -2px 33px 37px -5px rgba(255,255,255,1); box-shadow: 1px 8px 10px -3px rgba(255,255,255,1); }
@@ -20,7 +43,7 @@
 			.board div:nth-of-type(16n+10),
 			.board div:nth-of-type(16n+3),
 			.board div:nth-of-type(16n+1){ 
-				background: white; 
+				background: rgba(255, 255, 255, 0.8); 
 			}
 		@media screen and (max-width: 1024px), screen and (max-height: 768px){
 			.board {	
@@ -48,14 +71,19 @@
 	<!-- <h1>{{game.walking.color}} goes!!!</h1>
 	<h1>{{game.res}} </h1> -->
 		<div class='board'>
-			<div ng-repeat="cell in game.board" some-directive ng-click="game.makeTurn($event)" value="{{$index}}" ng-mouseover="game.hover($index,$event)" ng-mouseleave="game.leave($index,$event)"></div>
+			<div ng-repeat="cell in game.board" some-directive ng-click="game.makeTurn($event, $index)" value="{{$index}}" ng-mouseover="game.hover($index,$event)" ng-mouseleave="game.leave($index,$event)" ui-on-Drop="game.onDrop($event,$index,$data)"></div>
 		</div>
-		<!-- <div class="left_panel">
-			<div><h5>start new game</h5><div>
-			<div ng-repeat="row in left_panel_menu">
-				<h5>{{row.header}}</h5>
-				<span>{{row.body}}</span>
+		<div class="left_panel">
+			<div class="left_panel_slide"></div>
+			<div class="left_panel_content">
+				<span><h5>start new game</h5></span>
+				<span><h5>Restore Buttle</h5><h6>lolol lol ol olololol lol ol l olllloll</h6></span>
+				<span><h5>History</h5><h6>lolol lol ol olololol lol ol l olllloll</h6></span>
+				<span><h5>Powered by</h5><h6>lolol lol ol olololol lol ol l olllloll</h6></span>
+				<!-- <span ng-repeat="row in left_panel_menu">
+					<h5>{{row.header}}</h5>
+				</span> -->
 			</div>
-		</div> -->
+		</div>
 	</body>
 </html>

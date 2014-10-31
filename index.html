@@ -7,8 +7,11 @@
 		<script src="controllers/controller.js"></script>
 		<style>
 			body { position: absolute; width: 100%; height: 100%; overflow: hidden; }
-			.board { width: 80%; height: 80%; }
-			.some-directive { float: left; box-sizing: border-box; width: 10px; height: 10px; height: calc(100% / 8); width: calc(100% / 8); background: dimgrey; }
+			.board { width: 700px; height: 696px; margin: 0 auto; margin-top: 3%; -webkit-transition: width 1s cubic-bezier(.61,.82,.56,1.2) , height 1s cubic-bezier(.61,.82,.56,1.2); background: inherit; background-image: url(vendor/images/dark-wooden-2.jpg); background-position: center; background-size: cover; border-radius: 10px; }
+			.some-directive { float: left; box-sizing: border-box; width: 10px; height: 10px; height: calc(100% / 8); width: calc(100% / 8); -webkit-box-shadow: inset 0px 0px 3px 2px rgba(204,204,204,1); -moz-box-shadow: inset 0px 0px 3px 2px rgba(204,204,204,1); box-shadow: inset 0px 0px 3px 2px rgba(204,204,204,1); border: 1px solid rgba(0,0,0,0.9);  border-radius: 6px; color: white; }
+			.some-directive span {  width: 54px; height: 54px; position: relative; top: calc(50% - 30px); margin: 0 auto; border-radius: 50%; }
+			.some-directive .white { display: block; background: white;  -webkit-box-shadow: 1px 8px 0px 0px rgba(0,0,0,1); -moz-box-shadow: 1px 8px 0px 0px rgba(0,0,0,1); box-shadow: 1px 8px 0px 0px rgba(0,0,0,1); }
+			.some-directive .black { display: block; background: black;  -webkit-box-shadow: -2px 33px 37px -5px rgba(255,255,255,1); -moz-box-shadow: -2px 33px 37px -5px rgba(255,255,255,1); box-shadow: 1px 8px 10px -3px rgba(255,255,255,1); }
 			.board div:nth-of-type(16n+16),
 			.board div:nth-of-type(16n+14),
 			.board div:nth-of-type(16n+7),
@@ -17,17 +20,42 @@
 			.board div:nth-of-type(16n+10),
 			.board div:nth-of-type(16n+3),
 			.board div:nth-of-type(16n+1){ 
-				background-color: bisque;
+				background: white; 
 			}
+		@media screen and (max-width: 1024px), screen and (max-height: 768px){
+			.board {	
+				width: 600px;
+				height: 593px;
+				-webkit-transition: width 1s cubic-bezier(.29,1.16,.76,1.5) , height 1s cubic-bezier(.29,1.16,.76,1.5) ;
+			}
+			.some-directive span {
+				width: 44px; height: 44px; position: relative; top: calc(50% - 25px);
+			}
+		}
+		@media screen and (max-width: 800px), screen and (max-height: 600px){
+			.board {
+				width: 500px;
+				height: 496px;
+				-webkit-transition: width 1s cubic-bezier(.29,1.16,.76,1.5) , height 1s cubic-bezier(.29,1.16,.76,1.5) ;
+			}
+			.some-directive span {
+				width: 34px; height: 34px; position: relative; top: calc(50% - 20px);
+			}
+		}
 		</style>
 	</head>
 	<body ng-controller="mainCtrl as game">
-	{{game.score}}
-	{{game.board}}
-	{{game.turns}}
-	{{game.gameScore}}
+	<!-- <h1>{{game.walking.color}} goes!!!</h1>
+	<h1>{{game.res}} </h1> -->
 		<div class='board'>
 			<div ng-repeat="cell in game.board" some-directive ng-click="game.makeTurn($event)" value="{{$index}}" ng-mouseover="game.hover($index,$event)" ng-mouseleave="game.leave($index,$event)"></div>
 		</div>
+		<!-- <div class="left_panel">
+			<div><h5>start new game</h5><div>
+			<div ng-repeat="row in left_panel_menu">
+				<h5>{{row.header}}</h5>
+				<span>{{row.body}}</span>
+			</div>
+		</div> -->
 	</body>
 </html>

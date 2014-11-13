@@ -6,8 +6,10 @@
 		<script src="vendor/angular/angular.min.js"></script>
 		<script src="controllers/controller.js"></script>
 		<script src="vendor/angular-dragdrop-master/draganddrop.js"></script>
+		<link href='http://fonts.googleapis.com/css?family=Overlock+SC' rel='stylesheet' type='text/css'>
 		<style>
-			body { position: absolute; width: 100%; height: 100%; overflow: hidden; margin: 0; background-image: url(vendor/images/rain-1.jpg); }
+			
+			body 											{ position: absolute; width: 100%; height: 100%; overflow: hidden; margin: 0; }
 
 			/* Open Sans */
 			@font-face { font-family: 'Open Sans'; font-style: normal; font-weight: 300; src: local('Open Sans Light'), local('OpenSans-Light'), url(vendor/opensans/OpenSans-Light.woff) format('woff'); }
@@ -21,20 +23,35 @@
 			@font-face { font-family: 'Open Sans'; font-style: italic; font-weight: 700; src: local('Open Sans Bold Italic'), local('OpenSans-BoldItalic'), url(vendor/opensans/OpenSans-Bold-Italic.woff) format('woff'); }
 			@font-face { font-family: 'Open Sans'; font-style: italic; font-weight: 800; src: local('Open Sans Extrabold Italic'), local('OpenSans-ExtraboldItalic'), url(vendor/openssans/OpenSans-Extrabold-Italic.woff) format('woff'); }
 
-			.left_panel { position: absolute; float: right; width: 300px; height: 100%; top: 0; right: -290px; display: -moz-box; display: -webkit-box; display: box; -moz-box-orient: horizontal; -webkit-box-orient: horizontal; box-orient: horizontal; font-family: 'Open Sans', Roboto, sans-serif; -webkit-transition: right .5s,-webkit-transform .5s; }
-			.left_panel:hover { cursor: pointer; right: 0; /*-webkit-transform: rotateY(180deg); transform: rotateY(360deg);*/ -webkit-transition: right .5s,-webkit-transform .5s; }
-			.left_panel:hover span { height: 50px; border-bottom: 1px solid #CCCCCC; -webkit-transition: height .4s cubic-bezier(.53,.69,.46,5.79); }
-			.left_panel_slide { position: relative; float: left; height: 100%; width: 10px; border-right: 1px solid #CCCCCC; }
-			.left_panel_content { position: relative; float: left; height: 100%; background: rgba(255,255,255,.2); border-right: 1px solid; moz-box-flex: 1; -webkit-box-flex: 1; box-flex: 1; }
-			.left_panel_content > span { float: left; height: 0; width: 100%; text-align: center; overflow: hidden; color: #777777;  }
-			.left_panel_content > span:hover { height: 100px; background: rgba(255,255,255,.9); font-weight: 100; font-size: larger; color:#CCCCCC; -webkit-transition: height 1s cubic-bezier(.53,.69,.46,1.79); }
-			.left_panel_content > span h5 { font-weight: inherit; font-size: inherit; margin: 0; margin-top: 10px; margin-bottom: 13px; text-transform: uppercase; letter-spacing: -2px; color: inherit; }
-			.board { width: 700px; height: 696px; margin: 0 auto; margin-top: 3%; -webkit-transition: width 1s cubic-bezier(.61,.82,.56,1.2), height 1s cubic-bezier(.61,.82,.56,1.2); background: inherit; /*background-image: url(vendor/images/dark-wooden-2.jpg); background-position: center; background-size: cover;*/ background: rgba(0,0,0,.5); border-radius: 10px; color:#777777; }
-			.some-directive { float: left; box-sizing: border-box; width: 10px; height: 10px; height: calc(100% / 8); width: calc(100% / 8); -webkit-box-shadow: inset 0px 0px 3px 2px rgba(204,204,204,1); -moz-box-shadow: inset 0px 0px 3px 2px rgba(204,204,204,1); box-shadow: inset 0px 0px 3px 2px rgba(204,204,204,1); border: 1px solid rgba(0,0,0,0.9);  border-radius: 6px; color: white; }
-			.some-directive:hover { -webkit-transform: rotate(360000deg) scale(1) skew(0deg) translate(0px); -webkit-transition: -webkit-transform 1s; }
-			.some-directive span {  width: 54px; height: 54px; position: relative; top: calc(50% - 30px); margin: 0 auto; border-radius: 50%; }
-			.some-directive .white { display: block; background: white;  -webkit-box-shadow: 1px 8px 0px 0px rgba(0,0,0,1); -moz-box-shadow: 1px 8px 0px 0px rgba(0,0,0,1); box-shadow: 1px 8px 0px 0px rgba(0,0,0,1); }
-			.some-directive .black { display: block; background: black;  -webkit-box-shadow: -2px 33px 37px -5px rgba(255,255,255,1); -moz-box-shadow: -2px 33px 37px -5px rgba(255,255,255,1); box-shadow: 1px 8px 10px -3px rgba(255,255,255,1); }
+			.content 											{ position: absolute; width: 100%; height: 100%; overflow: hidden; margin: 0; background-image: url(vendor/images/rain-1.jpg); text-align: center; }
+			.left_panel 										{ position: absolute; float: right; width: 300px; height: 100%; top: 0; right: -290px; /*right: 0;*/ display: -moz-box; display: -webkit-box; display: box; -moz-box-orient: horizontal; -webkit-box-orient: horizontal; box-orient: horizontal; font-family: 'Open Sans', Roboto, sans-serif; -webkit-transition: right .5s,-webkit-transform .5s; }
+			.left_panel:hover 									{ cursor: pointer; right: 0; /*-webkit-transform: rotateY(180deg); transform: rotateY(360deg);*/ -webkit-transition: right .5s,-webkit-transform .5s; }
+			.left_panel:hover span { height: 50px; border-bottom: 1px solid #CCCCCC; -webkit-transition: height .4s; }
+			.left_panel_slide 									{ position: relative; float: left; height: 100%; width: 10px; border-right: 1px solid #CCCCCC; }
+			.left_panel_content 								{ position: relative; float: left; height: 100%; background: rgba(255,255,255,.2); border-right: 1px solid; moz-box-flex: 1; -webkit-box-flex: 1; box-flex: 1; }
+			.left_panel_content > span 							{ float: left; height: 0; width: 100%; text-align: center; overflow: hidden; color: #777777; -webkit-transition: height .4s; }
+			.left_panel_content > span:last-child > h6 			{ font-size: 11px; letter-spacing: 11px; margin-top: 20px; }
+			.left_panel_content > span > section 				{ overflow: auto; height: 90px; margin-top: 20px;}
+			.left_panel_content > span > section > h6:hover 	{ background: rgba(0,0,255,.1); }
+			.left_panel_content > span:hover 					{ max-height: 200px; height: auto; font-weight: 100; font-size: larger; color:#444444; -webkit-transition: height .5s cubic-bezier(.53,.69,.46,1.79); }
+			.left_panel_content > span:hover > h5				{ background: rgba(255,255,255,.8); }
+			.left_panel_content > span:nth-of-type(2):hover 	{ height: 148px; }
+			.left_panel_content > span:nth-of-type(3):hover 	{ height: 148px; }
+			.left_panel_content > span:nth-of-type(5):hover 	{ height: 80px; }
+			.left_panel_content > span h5 						{ font-weight: inherit; font-size: inherit; margin: 0; margin-top: 10px; margin-bottom: 13px; text-transform: uppercase; letter-spacing: -2px; color: inherit; }
+
+			.board 												{ display: none; width: 700px; height: 696px; margin: 0 auto; margin-top: 3%; -webkit-transition: width 1s cubic-bezier(.29,1.16,.76,1.5), height 1s cubic-bezier(.61,.82,.56,1.2); background: inherit; /*background-image: url(vendor/images/dark-wooden-2.jpg); background-position: center; background-size: cover;*/ background: rgba(0,0,0,.5); border-radius: 10px; color:#777777; }
+			.some-directive 									{ float: left; box-sizing: border-box; width: 10px; height: 10px; height: calc(100% / 8); width: calc(100% / 8); -webkit-box-shadow: inset 0px 0px 3px 2px rgba(204,204,204,1); -moz-box-shadow: inset 0px 0px 3px 2px rgba(204,204,204,1); box-shadow: inset 0px 0px 3px 2px rgba(204,204,204,1); border: 1px solid rgba(0,0,0,0.9);  border-radius: 6px; color: white; }
+			.some-directive:hover 								{ /*-webkit-transform: rotate(360000deg) scale(1) skew(0deg) translate(0px); -webkit-transition: -webkit-transform 1s;*/ }
+			.some-directive span 								{  width: 54px; height: 54px; position: relative; top: calc(50% - 30px); margin: 0 auto; border-radius: 50%; /* Chrome, Safari, Opera */ }
+			.shadow_checker 									{ display: block; background: rgba(80,80,80,.9); -webkit-animation: myfirst .5s linear; -webkit-animation-iteration-count:infinite; }		
+			@-webkit-keyframes myfirst 							{
+																	0% { -webkit-box-shadow: 0px 0px 7px 2px rgba(50,50,50, .8); }
+																	50% { -webkit-box-shadow: 0px 0px 6px 8px rgba(50,50,50, .8); }
+																	100% { -webkit-box-shadow: 0px 0px 7px 2px rgba(50,50,50, .8); }
+																}
+			.some-directive .white 								{ display: block; background: white;  -webkit-box-shadow: 1px 10px 0px 0px rgba(0,0,0,1); -moz-box-shadow: 1px 8px 0px 0px rgba(0,0,0,1); box-shadow: 1px 8px 0px 0px rgba(0,0,0,1); }
+			.some-directive .black 								{ display: block; background: black;  -webkit-box-shadow: -2px 33px 37px -5px rgba(255,255,255,1); -moz-box-shadow: -2px 33px 37px -5px rgba(255,255,255,1); box-shadow: 1px 8px 10px -3px rgba(255,255,255,1); }
 			.board div:nth-of-type(16n+16),
 			.board div:nth-of-type(16n+14),
 			.board div:nth-of-type(16n+7),
@@ -42,48 +59,166 @@
 			.board div:nth-of-type(16n+5),
 			.board div:nth-of-type(16n+10),
 			.board div:nth-of-type(16n+3),
-			.board div:nth-of-type(16n+1){ 
-				background: rgba(255, 255, 255, 0.8); 
+			.board div:nth-of-type(16n+1)						{ background: rgba(255, 255, 255, 0.8); }
+
+			.starter { text-align: center; text-shadow: 13px -26px 5px #C2C2C2; font-size: 44px; color: #000000; font-family: Overlock SC; letter-spacing: -7px; top: 50%;  position: relative; /* border-radius: 20px; */ /* width: 307px; */ /* height: 300px; */ display: block; cursor: pointer; } 
+			.starter:hover { border: 1px solid white; }
+
+			::-webkit-scrollbar              { width: 12px; }
+			::-webkit-scrollbar-button       {  }
+			::-webkit-scrollbar-track        { border-radius: 10px; -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);  }
+			::-webkit-scrollbar-track-piece  {  }
+			::-webkit-scrollbar-thumb        { border-radius: 10px; -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);  }
+			::-webkit-scrollbar-corner       {  }
+			::-webkit-resizer				 {  }
+
+			.animated { 
+			   -webkit-animation-duration: 1s; 
+			   animation-duration: 1s; 
+			   -webkit-animation-fill-mode: both; 
+			   animation-fill-mode: both; 
+			   -webkit-animation-timing-function: ease-out; 
+			   animation-timing-function: ease-out; 
+			   -webkit-animation-duration: 0.5s; 
+			    animation-duration: 0.5s; 
+			    -webkit-animation-name: lightSpeedIn; 
+			    animation-name: lightSpeedIn; 
+			    -webkit-animation-timing-function: ease-out; 
+			    animation-timing-function: ease-out;
+			} 
+
+			@-webkit-keyframes lightSpeedIn { 
+			   0% { -webkit-transform: translateX(100%) skewX(-30deg); opacity: 0; } 
+			    60% { -webkit-transform: translateX(-20%) skewX(30deg); opacity: 1; } 
+			    80% { -webkit-transform: translateX(0%) skewX(-15deg); opacity: 1; } 
+			    100% { -webkit-transform: translateX(0%) skewX(0deg); opacity: 1; } 
+			} 
+			@keyframes lightSpeedIn { 
+			    0% { transform: translateX(100%) skewX(-30deg); opacity: 0; } 
+			    60% { transform: translateX(-20%) skewX(30deg); opacity: 1; } 
+			    80% { transform: translateX(0%) skewX(-15deg); opacity: 1; } 
+			    100% { transform: translateX(0%) skewX(0deg); opacity: 1; } 
+			} 
+			.history { display: none; position: absolute; width: 100%; height: 100%; /*background: rgba(255,255,255,.4);*/ top: 100%; }
+			.active { display: block; top:0; }
+			.active span {
+				width: 800px; height: 800px; position: absolute; top: calc(50% - 400px); left: calc(50% - 400px); background: white; background: rgba(255,255,255,.6); border-radius: 10px;
+				display: block;
+				-webkit-animation-duration: 1s; 
+			   	animation-duration: 1s; 
+			   	-webkit-animation-fill-mode: both; 
+			   	animation-fill-mode: both; 
+			   	-webkit-animation-timing-function: ease-out; 
+			   	animation-timing-function: ease-out; 
+			   	-webkit-animation-duration: 0.5s; 
+			    animation-duration: 0.5s; 
+			    -webkit-animation-name: lightSpeedIn; 
+			    animation-name: lightSpeedIn; 
+			    -webkit-animation-timing-function: ease-out; 
+			    animation-timing-function: ease-out; }
+			    .blured { filter: blur(10px); -webkit-filter: blur(10px); -webkit-transition: -webkit-filter 2; }
+
+			.exit { top: 100%;  -webkit-transition: top 2s linear 2s; }
+			.exit span { 
+			  -webkit-animation-name: hinge; 
+			    animation-name: hinge;
+			   -webkit-animation-duration: 1.5s; 
+			   animation-duration: 1.5s; 
+			   -webkit-animation-fill-mode: both; 
+			   animation-fill-mode: both; 
+			} 
+
+			@-webkit-keyframes hinge { 
+			    0% { -webkit-transform: rotate(0); -webkit-transform-origin: top left; -webkit-animation-timing-function: ease-in-out; } 
+			    20%, 60% { -webkit-transform: rotate(80deg); -webkit-transform-origin: top left; -webkit-animation-timing-function: ease-in-out; } 
+			    40% { -webkit-transform: rotate(60deg); -webkit-transform-origin: top left; -webkit-animation-timing-function: ease-in-out; } 
+			    80% { -webkit-transform: rotate(60deg) translateY(0); opacity: 1; -webkit-transform-origin: top left; -webkit-animation-timing-function: ease-in-out; } 
+			    100% { -webkit-transform: translateY(700px); opacity: 0; } 
+			} 
+			@keyframes hinge { 
+			    0% { transform: rotate(0); transform-origin: top left; animation-timing-function: ease-in-out; } 
+			    20%, 60% { transform: rotate(80deg); transform-origin: top left; animation-timing-function: ease-in-out; } 
+			    40% { transform: rotate(60deg); transform-origin: top left; animation-timing-function: ease-in-out; } 
+			    80% { transform: rotate(60deg) translateY(0); opacity: 1; transform-origin: top left; animation-timing-function: ease-in-out; } 
+			    100% { transform: translateY(700px); opacity: 0; } 
+			} 
+
+			.rollIn { 
+				display: block;
+			   -webkit-animation-duration: 1s; 
+			   animation-duration: 1s; 
+			   -webkit-animation-fill-mode: both; 
+			   animation-fill-mode: both;
+			   -webkit-animation-name: rollIn; 
+			    animation-name: rollIn 
+			} 
+
+			@-webkit-keyframes rollIn { 
+			    0% { opacity: 0; -webkit-transform: translateX(-100%) rotate(-120deg); } 
+			    100% { opacity: 1; -webkit-transform: translateX(0px) rotate(0deg); } 
+			} 
+			@keyframes rollIn { 
+			    0% { opacity: 0; transform: translateX(-100%) rotate(-120deg); } 
+			    100% { opacity: 1; transform: translateX(0px) rotate(0deg); } 
+			} 
+
+			@media screen and (max-width: 1024px), screen and (max-height: 768px){
+				.board {	
+					width: 600px;
+					height: 593px;
+					-webkit-transition: width 1s cubic-bezier(.29,1.16,.76,1.5) , height 1s cubic-bezier(.29,1.16,.76,1.5) ;
+				}
+				.some-directive span {
+					width: 44px; height: 44px; position: relative; top: calc(50% - 25px);
+				}
+				.history span {  width: 650px; height: 650px; top: calc(50% - 325px); left: calc(50% - 325px); }
 			}
-		@media screen and (max-width: 1024px), screen and (max-height: 768px){
-			.board {	
-				width: 600px;
-				height: 593px;
-				-webkit-transition: width 1s cubic-bezier(.29,1.16,.76,1.5) , height 1s cubic-bezier(.29,1.16,.76,1.5) ;
+			@media screen and (max-width: 800px), screen and (max-height: 680px){
+				.board {
+					margin-top: 85px;
+					width: 500px;
+					height: 496px;
+					-webkit-transition: width 1s cubic-bezier(.29,1.16,.76,1.5) , height 1s cubic-bezier(.29,1.16,.76,1.5) ;
+				}
+				.some-directive span {
+					width: 34px; height: 34px; position: relative; top: calc(50% - 20px);
+				}
+				.history span {  width: 500px; height: 500px; top: calc(50% - 250px); left: calc(50% - 250px); }
 			}
-			.some-directive span {
-				width: 44px; height: 44px; position: relative; top: calc(50% - 25px);
-			}
-		}
-		@media screen and (max-width: 800px), screen and (max-height: 600px){
-			.board {
-				width: 500px;
-				height: 496px;
-				-webkit-transition: width 1s cubic-bezier(.29,1.16,.76,1.5) , height 1s cubic-bezier(.29,1.16,.76,1.5) ;
-			}
-			.some-directive span {
-				width: 34px; height: 34px; position: relative; top: calc(50% - 20px);
-			}
-		}
 		</style>
 	</head>
-	<body ng-controller="mainCtrl as game">
-	<!-- <h1>{{game.walking.color}} goes!!!</h1>
-	<h1>{{game.res}} </h1> -->
-		<div class='board'>
-			<div ng-repeat="cell in game.board" some-directive ng-click="game.makeTurn($event, $index)" value="{{$index}}" ng-mouseover="game.hover($index,$event)" ng-mouseleave="game.leave($index,$event)" ui-on-Drop="game.onDrop($event,$index,$data)"></div>
-		</div>
-		<div class="left_panel">
-			<div class="left_panel_slide"></div>
-			<div class="left_panel_content">
-				<span><h5>start new game</h5></span>
-				<span><h5>Restore Buttle</h5><h6>lolol lol ol olololol lol ol l olllloll</h6></span>
-				<span><h5>History</h5><h6>lolol lol ol olololol lol ol l olllloll</h6></span>
-				<span><h5>Powered by</h5><h6>lolol lol ol olololol lol ol l olllloll</h6></span>
-				<!-- <span ng-repeat="row in left_panel_menu">
-					<h5>{{row.header}}</h5>
-				</span> -->
+	<body ng-controller="mainCtrl as game" ng-mousemove="game.mouseMove($event)">
+	<!--<h1>{{game.walking.color}} goes!!!</h1>
+	 <h1>{{game.res}} </h1> -->
+	 	<div class="content">
+			<div class='board'>
+				<div ng-repeat="cell in game.board" some-directive ng-click="game.makeTurn($event, $index)" value="{{$index}}" ng-mouseover="game.hover($index,$event)" ng-mouseleave="game.leave($index,$event)" ui-on-Drop="game.onDrop($event,$index,$data)"></div>
 			</div>
+			<span class="starter" ng-click="game.startNewGame()">start new game</span>
+			<div class="left_panel">
+				<div class="left_panel_slide"></div>
+				<div class="left_panel_content">
+					<span ng-click="game.startNewGame()"><h5>start new game</h5></span>
+					<span>
+						<h5>Restore Buttle</h5>
+						<section>
+							<h6 ng-repeat='saved in game.savedGames' ng-click="game.restoreGame($index)">{{$index}}{{saved.time}}</h6>
+						</section>
+					</span>
+					<span><h5 ng-click="game.showHistory()">History</h5>
+						<section>
+							<h6 ng-repeat='piece in game.history'>{{$index}}{{piece.header}}</h6>
+						</section></span>
+					<span ng-click="game.saveGame()"><h5>Save Current Game</h5></span>
+					<span><h5>Powered by</h5><h6>vetalVetal</h6></span>
+					<!-- <span ng-repeat="row in left_panel_menu">
+						<h5>{{row.header}}</h5>
+					</span> -->
+				</div>
+			</div>
+		</div>
+		<div class="history">
+			<span ng-click="game.exitHistory()"></span>
 		</div>
 	</body>
 </html>

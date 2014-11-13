@@ -17,28 +17,57 @@
 		var game = this;
 		game.board = boardObject.board;
 		game.score = gameObject.score.boardState;
-		game.walking = {
-			color: 'white',
-			checkerMustGo : false,
-		};
+		game.savedGames = gameObject.savedGames;
+		console.log(game.savedGames);
+		// game.walking = {
+		// 	color: 'white',
+		// 	checkerMustGo : false,
+		// };
 		game.res = {
 			white: 12,
-			black:12
+			black: 12
 		};
+
+		game.mouseMove = function(e){
+			document.getElementsByClassName('starter')[0].style.textShadow = (document.body.clientWidth/2 - e.clientX || e.pageX)*.05 +'px '+(document.body.clientHeight/2 - e.clientY || e.pageY)*.05+'px 5px white, 0px 0px 5px white';
+			//console.log(document.body.clientWidth);
+		}
+
+		game.startNewGame = function(){
+			game.score = ['',Checkers.getCheckerInstance('black'),'',Checkers.getCheckerInstance('black'),'',Checkers.getCheckerInstance('black'),'',Checkers.getCheckerInstance('black'),Checkers.getCheckerInstance('black'),'',Checkers.getCheckerInstance('black'),'',Checkers.getCheckerInstance('black'),'',Checkers.getCheckerInstance('black'),'','',Checkers.getCheckerInstance('black'),'',Checkers.getCheckerInstance('black'),'',Checkers.getCheckerInstance('black'),'',Checkers.getCheckerInstance('black'),'','','','','','','','','','','','','','','','',Checkers.getCheckerInstance('white'),'',Checkers.getCheckerInstance('white'),'',Checkers.getCheckerInstance('white'),'',Checkers.getCheckerInstance('white'),'','',Checkers.getCheckerInstance('white'),'',Checkers.getCheckerInstance('white'),'',Checkers.getCheckerInstance('white'),'',Checkers.getCheckerInstance('white'),Checkers.getCheckerInstance('white'),'',Checkers.getCheckerInstance('white'),'',Checkers.getCheckerInstance('white'),'',Checkers.getCheckerInstance('white')];
+			document.getElementsByClassName('board')[0].className += " rollIn";
+		}
+
+		game.saveGame = function(){
+			game.savedGames.push({boardState: game.score, time: new Date});
+			console.log(game.savedGames);
+		}
+
+		game.restoreGame = function(gameIndex){
+			game.score = game.savedGames[gameIndex].boardState;
+		}
+
+		game.showHistory = function(){
+			document.getElementsByClassName('history')[0].className = "history active";
+			document.getElementsByClassName('content')[0].className += " blured";
+		}
+
+		game.exitHistory = function(){
+			document.getElementsByClassName('history')[0].className += " exit";
+			document.getElementsByClassName('content')[0].className = "content";
+		}
+
 		game.dragStart = function(e,elementIndex){
-			console.log(elementIndex);
-        	game.score[elementIndex].setPossibleMoves(elementIndex, game.score);
-    		if( game.score[elementIndex].possibleMoves.length )Array.prototype.forEach.call(document.querySelectorAll( game.score[elementIndex].possibleMoves.reduce(function(a,b){ return a+'.some-directive:nth-of-type('+(b+1)+'),';},'').slice(0, -1)),function(x){ x.style.background = 'red';});
+      //    	game.score[elementIndex].setPossibleMoves(elementIndex, game.score);
+    		// if( game.score[elementIndex].possibleMoves && game.score[elementIndex].possibleMoves.length )Array.prototype.forEach.call(document.querySelectorAll( game.score[elementIndex].possibleMoves.reduce(function(a,b){ return a+'.some-directive:nth-of-type('+(b+1)+'),';},'').slice(0, -1)),function(x){ x.firstChild.className = "shadow_checker ";});
       	};
       
       	game.onDrop = function(event,elementIndex, draggedElementIndex){
-          console.log(event);
-           console.log(draggedElementIndex);
-           if(game.score[draggedElementIndex].possibleMoves.indexOf(elementIndex) > -1) {
-          		if(game.score[draggedElementIndex].possibleMoves.length) Array.prototype.forEach.call(document.querySelectorAll( game.score[draggedElementIndex].possibleMoves.reduce(function(a,b){ return a+'.some-directive:nth-of-type('+(b+1)+'),';},'').slice(0, -1)),function(x){console.log(x); x.style.background = 'none';});
-          		game.score[elementIndex] = game.score.splice(draggedElementIndex, 1, game.score[elementIndex])[0];
-           		console.log(game.score[draggedElementIndex]);
-           }
+           	// if(game.score[draggedElementIndex].possibleMoves && game.score[draggedElementIndex].possibleMoves.indexOf(elementIndex) > -1) {
+          		// if(game.score[draggedElementIndex].possibleMoves.length) Array.prototype.forEach.call(document.querySelectorAll( game.score[draggedElementIndex].possibleMoves.reduce(function(a,b){ return a+'.some-directive:nth-of-type('+(b+1)+'),';},'').slice(0, -1)),function(x){console.log(x); x.firstChild.className = '';});
+          		// game.score[elementIndex] = game.score.splice(draggedElementIndex, 1, game.score[elementIndex])[0];
+           	// 	console.log(game.score[draggedElementIndex]);
+           	// }
       	};
 		// game.hover = function(a,e){
 		// 	//console.log(a);
@@ -54,76 +83,54 @@
 		// 	console.log(event.target.value);
 		// }
 		game.makeTurn = function(event, elementIndex){
-			
-			console.log('in start');
 			//var elementIndex = Array.prototype.indexOf.call(event.target.parentElement.children, event.target);
-			console.log(elementIndex);
-			
-			
+		
 			game.score.turns = gameObject.score.turns;
-			console.log(elementIndex);
-			console.log(game.score[elementIndex].color);
 
-			if(game.score[elementIndex] && game.score[elementIndex].color == game.walking.color) {
+			if(game.score[elementIndex]  /*&& game.score[elementIndex].color == game.walking.color*/  ) {
 				console.log('in select');
-				if( 'x' in window && game.score[elementIndex].possibleMoves.length ) {
-				 	Array.prototype.forEach.call(document.querySelectorAll( game.score[elementIndex].possibleMoves.reduce(function(a,b){ return a+'.some-directive:nth-of-type('+(b+1)+'),';},'').slice(0, -1)),function(x){ x.style.background = 'none';});
-					game.score[elementIndex].clearPossibleMoves();
+				if( 'x' in window && x &&  game.score[x].possibleMoves && game.score[x].possibleMoves.length ) {
+				 	Array.prototype.forEach.call(document.querySelectorAll( game.score[x].possibleMoves.reduce(function(a,b){ return a+'.some-directive:nth-of-type('+(b+1)+'),';},'').slice(0, -1)),function(x){ x.firstChild.className = ''; });
+					game.score[x].clearPossibleMoves();
 				}
 				x = elementIndex; 
 				game.score[elementIndex].clearPossibleMoves();
-				//[elementIndex+7, elementIndex+9, elementIndex-7, elementIndex-9].forEach(function(x,i){if(!game.score[x] && x > elementIndex){arr.push(x); return false;} else if(game.score[x] && game.score[x] !== game.score[elementIndex] && !game.score[x+x-elementIndex]) arr.push(x+x-elementIndex); })
-				//Array.prototype.forEach.call(document.querySelectorAll('.some-directive:nth-of-type('+(game.score[x] == 'x' ? (game.score[x-9] == 'x' ? -1 : x-8) : (game.score[x+9] == 'o' ? -1 : x+10))+'),.some-directive:nth-of-type('+(game.score[x] == 'x' ? (game.score[x-7] == 'x' ? -1 : x-6) : (game.score[x+7] == 'o' ? -1 : x+8))+')'),function(x){x.style.background = 'red';});
-				//console.log(game.score[elementIndex],x, x+9,game.score[x+9],x+7,game.score[x+7]);
 				game.score[elementIndex].setPossibleMoves(elementIndex, game.score);
-				//console.log(game.score[elementIndex].possibleMoves ); 
-				if( game.score[elementIndex].possibleMoves.length )Array.prototype.forEach.call(document.querySelectorAll( game.score[elementIndex].possibleMoves.reduce(function(a,b){ return a+'.some-directive:nth-of-type('+(b+1)+'),';},'').slice(0, -1)),function(x){ x.style.background = 'red';});
-				//console.log(Checker.possibleMoves);
-				//console.log('posiible:',game.score[x].possibleMoves);
+				if( game.score[elementIndex].possibleMoves.length )Array.prototype.forEach.call(document.querySelectorAll( game.score[elementIndex].possibleMoves.reduce(function(a,b){ return a+'.some-directive:nth-of-type('+(b+1)+'),';},'').slice(0, -1)),function(x){ x.firstChild.className = "shadow_checker ";});
+
 
 			}
 			else if('x' in window && x && game.score[x].possibleMoves.indexOf(elementIndex) > -1) { 
 				console.log('in move: ', elementIndex,' , ', x);
-				Array.prototype.forEach.call(document.querySelectorAll( game.score[x].possibleMoves.reduce(function(a,b){ return a+'.some-directive:nth-of-type('+(b+1)+'),';},'').slice(0, -1)),function(x){console.log(x); x.style.background = 'none';});
+				Array.prototype.forEach.call(document.querySelectorAll( game.score[x].possibleMoves.reduce(function(a,b){ return a+'.some-directive:nth-of-type('+(b+1)+'),';},'').slice(0, -1)),function(x){/*console.log(x); x.style.background = 'none';*/ x.firstChild.className = "";});
 				
-				//console.log('posiible:',game.score[x].possibleMoves);//console.log([x+8, x+6]);
 				game.score[elementIndex] = game.score.splice(x, 1, game.score[elementIndex])[0];
 				if([7, 9, -7, -9].indexOf((elementIndex-x)/2) > -1) { 
 					console.log('in beat');
 					game.score[x + (elementIndex-x)/2] = '';
-					game.score[elementIndex].setPossibleMoves(elementIndex, game.score);
+					//game.score[elementIndex].setPossibleMoves(elementIndex, game.score);
 					var counts = {};
-					//console.log()
 					game.score.forEach(function(element){ if(element)counts[element.color] = (counts[element.color] || 0) + 1;});
 					game.res = counts;
-					//console.log(counts)
-					//console.log(game.score[elementIndex].possibleMoves);
-					if(game.score[elementIndex].possibleMoves.length) {
-						if(game.score[x].possibleMoves.length) Array.prototype.forEach.call(document.querySelectorAll( game.score[x].possibleMoves.reduce(function(a,b){ return a+'.some-directive:nth-of-type('+(b+1)+'),';},'').slice(0, -1)),function(x){console.log(x); x.style.background = 'none';});
-						Array.prototype.forEach.call(document.querySelectorAll( game.score[elementIndex].possibleMoves.reduce(function(a,b){ return a+'.some-directive:nth-of-type('+(b+1)+'),';},'').slice(0, -1)),function(x){console.log(x); x.style.background = 'red';});
-						game.walking.checkerMustGo = elementIndex;
-					}
-					else { 
-						game.walking.color = ['black', 'white'][['white', 'black'].indexOf(game.walking.color)];
-					}
+					// if(game.score[elementIndex].possibleMoves.length) {
+					// 	if(game.score[x].possibleMoves && game.score[x].possibleMoves.length) Array.prototype.forEach.call(document.querySelectorAll( game.score[x].possibleMoves.reduce(function(a,b){ return a+'.some-directive:nth-of-type('+(b+1)+'),';},'').slice(0, -1)),function(x){console.log(x); x.style.background = 'none';});
+					// 	Array.prototype.forEach.call(document.querySelectorAll( game.score[elementIndex].possibleMoves.reduce(function(a,b){ return a+'.some-directive:nth-of-type('+(b+1)+'),';},'').slice(0, -1)),function(x){console.log(x); x.style.background = 'red';});
+					// 	game.walking.checkerMustGo = elementIndex;
+					// }
+					// else { 
+					// 	game.walking.color = ['black', 'white'][['white', 'black'].indexOf(game.walking.color)];
+					// }
 				}
-				else {
-					game.walking.color = ['black', 'white'][['white', 'black'].indexOf(game.walking.color)];
-				}
+				// else {
+				// 	game.walking.color = ['black', 'white'][['white', 'black'].indexOf(game.walking.color)];
+				// }
 
-				
-
-				//game.score[2] = King.getKingInstance(Checkers.getCheckerInstance('sraka'));
-				//console.log(game.score[0].color, x);
-				//console.log((elementIndex-x)/2 in [7, 9, -7, -9],(elementIndex-x)/2);
-				//Array.prototype.forEach.call(document.querySelectorAll('.some-directive:nth-of-type('+(game.score[elementIndex] == 'x' ? x-8 : x+10)+'),.some-directive:nth-of-type('+(game.score[elementIndex] == 'x' ? x-6 : x+8)+')'),function(x){x.style.background = 'none';});
 				x = 0;
-				//console.log('posiible:',game.score[x].possibleMoves);
+
 			}
 			else if( 'x' in window && x && game.score[x].possibleMoves.length ) {
 				console.log('in end');
-				//console.log(x);
-				 Array.prototype.forEach.call(document.querySelectorAll( game.score[x].possibleMoves.reduce(function(a,b){ return a+'.some-directive:nth-of-type('+(b+1)+'),';},'').slice(0, -1)),function(x){ x.style.background = 'none';});
+				 Array.prototype.forEach.call(document.querySelectorAll( game.score[x].possibleMoves.reduce(function(a,b){ return a+'.some-directive:nth-of-type('+(b+1)+'),';},'').slice(0, -1)),function(x){ x.firstChild.className = ''; });
 				game.score[x].clearPossibleMoves();
 			}
 		}
@@ -138,7 +145,6 @@
 			Checker.prototype.direction = color == 'white' ?  1 : -1;
 			Checker.prototype.possibleMoves = [];
 			Checker.prototype.setPossibleMoves = function(index, board){
-				//console.log(board);
 			    var self = this;
 				[index+7, index+9, index-7, index-9].forEach(function(x,i){if(!board[x] && ((index - x) * self.direction) >= 0 && (index/Math.sqrt(board.length+1) | 0)  == (x/Math.sqrt(board.length+1) | 0) + self.direction){self.possibleMoves.push(x); console.log('push x:',x); return false; } else if(board[x] && 'color' in board[x] && board[x].color !== board[index].color && !board[x+x-index] && [((x+x-index)/Math.sqrt(board.length+1) | 0) + 2*self.direction, ((x+x-index)/Math.sqrt(board.length+1) | 0) - 2*self.direction].indexOf((index/Math.sqrt(board.length+1) | 0)) > -1){ self.possibleMoves.push(x+x-index);console.log('push x+x-index:',x+x-index); } });
 			}
@@ -176,23 +182,6 @@
 	// 	];
 	// }
 
-	// function King(){
-
-	// }
-	// King.prototype = Object.create(Checkers.prototype);
-
-	// mainCtrl.prototype.someObj = { };
-	
-
-	// function otherCtrl(){}
-	// otherCtrl.prototype = Object.create(mainCtrl.prototype);
-	
-	// function firstService(){
-	// 	this.methods = function(){
-
-	// 	};
-	// }
-
 	function gameObject(Checkers){
 		this.score = {
 		 	boardState : ['',Checkers.getCheckerInstance('black'),'',Checkers.getCheckerInstance('black'),'',Checkers.getCheckerInstance('black'),'',Checkers.getCheckerInstance('black'),Checkers.getCheckerInstance('black'),'',Checkers.getCheckerInstance('black'),'',Checkers.getCheckerInstance('black'),'',Checkers.getCheckerInstance('black'),'','',Checkers.getCheckerInstance('black'),'',Checkers.getCheckerInstance('black'),'',Checkers.getCheckerInstance('black'),'',Checkers.getCheckerInstance('black'),'','','','','','','','','','','','','','','','',Checkers.getCheckerInstance('white'),'',Checkers.getCheckerInstance('white'),'',Checkers.getCheckerInstance('white'),'',Checkers.getCheckerInstance('white'),'','',Checkers.getCheckerInstance('white'),'',Checkers.getCheckerInstance('white'),'',Checkers.getCheckerInstance('white'),'',Checkers.getCheckerInstance('white'),Checkers.getCheckerInstance('white'),'',Checkers.getCheckerInstance('white'),'',Checkers.getCheckerInstance('white'),'',Checkers.getCheckerInstance('white')],
@@ -200,6 +189,7 @@
 		 	turns : 0,
 		}
 		this.players  = { 0: 'x', 1:'o'};
+		this.savedGames = [];
 		return this;
 	}
 	this.$inject = ['Checkers'];
